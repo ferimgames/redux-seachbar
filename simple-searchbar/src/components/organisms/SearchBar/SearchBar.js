@@ -106,9 +106,7 @@ const SearchBar = () => {
         dispatch(fetchItemsData(searchQuery));
       }
     }, 300);
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [dispatch, searchQuery, firstSearchMade]);
 
   const searchBarOnChangeHandler = (value) => {
@@ -135,9 +133,9 @@ const SearchBar = () => {
 
   let itemListHTML = [];
   if (isLoading && firstSearchMade && searchQuery !== "") {
-    for (let i = 0; i < 10; i++) {
-      itemListHTML.push(<ShoppingItem key={i} isLoading={isLoading} />);
-    }
+    itemListHTML = Array.from({ length: 10 }).map((_, i) => (
+      <ShoppingItem key={i} isLoading={isLoading} />
+    ));
   } else if (items.length === 0 && !isLoading && searchQuery !== "") {
     itemListHTML.push(
       <StyledNoResultsMessage key="1"> NO RESULTS FOUND</StyledNoResultsMessage>
