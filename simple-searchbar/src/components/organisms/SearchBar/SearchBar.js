@@ -5,7 +5,7 @@ import { shoppingListActions } from "../../../store/shopping-list-slice";
 import { uiActions } from "../../../store/ui-slice";
 import { fetchItemsData } from "../../../store/shopping-list-actions";
 import useOutsideClick from "../../../hooks/useOutSideClick";
-import { devices } from "../../../Util/width-devices";
+import { devices } from "../../../util/width-devices";
 import ShoppingItem from "../../molecules/ShoppingItem/ShoppingItem";
 import Input from "../../atoms/Input/Input";
 import Card from "../../atoms/Card/Card";

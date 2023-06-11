@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 import Card from "../../atoms/Card/Card";
-import { boldedText } from "../../../Util/formatters";
+import { boldedText } from "../../../util/formatters"
 // Create a styled container for the shopping item based on Card atom
 const StyledItemContainer = styled.li`
   list-style: none;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SearchBar from "../components/organisms/SearchBar/SearchBar";
-import { devices } from "../Util/width-devices";
+import { devices } from "../util/width-devices";
 const StyledHeader = styled.header`
   width: 100%;
   height: 5rem;
