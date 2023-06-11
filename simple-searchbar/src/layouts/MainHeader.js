@@ -9,14 +9,8 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   background-color: #252424;
-
   & h1 {
     color: white;
-  }
-  & ul {
-    list-style: none;
-    margin: 10px 0px;
-    padding: 0;
   }
   @media ${devices.md} {
     text-align: center;
@@ -24,16 +18,22 @@ const StyledHeader = styled.header`
     height: fit-content;
   }
 `;
+
+const StyledNavList = styled.ul`
+    list-style: none;
+    margin: 10px 0px;
+    padding: 0;
+`
 const MainHeader = (props) => {
   return (
     <StyledHeader>
       <h1>Redux SearchBar</h1>
       <nav>
-        <ul>
+        <StyledNavList>
           <li>
             <SearchBar />
           </li>
-        </ul>
+        </StyledNavList>
       </nav>
     </StyledHeader>
   );

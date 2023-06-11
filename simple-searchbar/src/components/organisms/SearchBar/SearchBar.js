@@ -14,36 +14,59 @@ const Wrap = styled.div`
   position: relative;
 `;
 
-const StyledListOfResults = styled.ul`
+const ListWrap = styled.div`
   position: absolute;
-  top: 40px;
+  width: 45em;
+  top: 55px;
   right: 0px;
   background-color: white;
-  padding-inline-start: 0px;
   box-shadow: 0px 12px 28px rgba(48, 55, 61, 0.2);
-  max-height: 350px;
-  overflow-y: auto;
-  width: 45em;
+  &::before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    right: 10%;
+    top: -20px;
+    margin-left: -10px;
+    border: 10px solid;
+    border-color: transparent transparent white transparent;
+  }
+`;
 
+const StyledShadowBox = styled.div`
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 6px);
+  height: 20px;
+  box-shadow: inset 0px -15px 10px 0px rgba(233, 233, 233);
+  z-index: 1;
+`;
+
+const StyledListOfResults = styled.ul`
+  position: relative;
+  overflow-y: auto;
+  max-height: 350px;
+  padding-inline-start: 0px;
+  padding-bottom: 20px;
   &::-webkit-scrollbar {
     width: 6px;
   }
-  /* Track */
   &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px #fcfcfc;
     border-radius: 4px;
     border: 1px solid #e8e8e8;
   }
-  /* Handle */
   &::-webkit-scrollbar-thumb {
     background: #7a7a7a;
     border-radius: 4px;
   }
-  /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: #7a7a7a;
   }
-
+  & li:last-child div {
+    border-bottom: initial;
+  }
   @media ${devices.md} {
     width: 100%;
   }
@@ -82,7 +105,7 @@ const SearchBar = () => {
       if (firstSearchMade) {
         dispatch(fetchItemsData(searchQuery));
       }
-    }, 200);
+    }, 300);
     return () => {
       clearTimeout(timer);
     };
@@ -139,11 +162,17 @@ const SearchBar = () => {
       <StyledSearchInput
         id="search"
         placeholder="Make your search Here"
+        value={searchQuery}
         onChange={searchBarOnChangeHandler}
         onFocus={searchBarOnFocusHandler}
       />
       {searchQuery !== "" && isFocused && (
-        <StyledListOfResults onClick={onClickListHandler}>{itemListHTML}</StyledListOfResults>
+        <ListWrap>
+          <StyledListOfResults onClick={onClickListHandler}>
+            {itemListHTML}
+          </StyledListOfResults>
+          <StyledShadowBox />
+        </ListWrap>
       )}
     </Wrap>
   );

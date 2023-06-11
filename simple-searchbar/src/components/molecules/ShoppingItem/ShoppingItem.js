@@ -42,12 +42,13 @@ const ItemDescriptionContainer = styled.div`
 
 // Create a styled image component
 const ItemImage = styled.img`
-  width: 50px;
-  height: 75px;
+  width: 3.5em;
+  height: 5.25em;
   border-radius: 4px;
   margin-right: 16px;
   position: absolute;
   object-fit: cover;
+  border: 1px solid #ededed;
 `;
 
 // Create a keyframe animation for the loading skeleton

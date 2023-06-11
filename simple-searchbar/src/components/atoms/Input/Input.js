@@ -54,7 +54,7 @@ const Input = ({
 Input.defaultProps = {
   placeholder: "",
   label: null,
-  value: null,
+  value: "",
   onChange: () => {},
   onBlur: () => {},
   onFocus: () => {},
