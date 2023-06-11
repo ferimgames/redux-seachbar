@@ -32,6 +32,9 @@ const ListWrap = styled.div`
     border: 10px solid;
     border-color: transparent transparent white transparent;
   }
+  @media ${devices.md} {
+    width: 100%;
+  }
 `;
 
 const StyledShadowBox = styled.div`
@@ -48,7 +51,7 @@ const StyledListOfResults = styled.ul`
   overflow-y: auto;
   max-height: 350px;
   padding-inline-start: 0px;
-  padding-bottom: 20px;
+  padding-bottom: ${(props) => (props.isEmpty ? "0px" : "20px")};
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -66,9 +69,6 @@ const StyledListOfResults = styled.ul`
   }
   & li:last-child div {
     border-bottom: initial;
-  }
-  @media ${devices.md} {
-    width: 100%;
   }
 `;
 const StyledSearchInput = styled(Input)`
@@ -168,10 +168,13 @@ const SearchBar = () => {
       />
       {searchQuery !== "" && isFocused && (
         <ListWrap>
-          <StyledListOfResults onClick={onClickListHandler}>
+          <StyledListOfResults
+            onClick={onClickListHandler}
+            isEmpty={items.length === 0}
+          >
             {itemListHTML}
           </StyledListOfResults>
-          <StyledShadowBox />
+          {items.length !== 0 && <StyledShadowBox />}
         </ListWrap>
       )}
     </Wrap>
