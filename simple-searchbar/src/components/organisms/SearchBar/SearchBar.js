@@ -13,7 +13,6 @@ import Card from "../../atoms/Card/Card";
 const Wrap = styled.div`
   position: relative;
 `;
-
 const ListWrap = styled.div`
   position: absolute;
   width: 45em;
@@ -36,7 +35,6 @@ const ListWrap = styled.div`
     width: 100%;
   }
 `;
-
 const StyledShadowBox = styled.div`
   position: absolute;
   bottom: 0px;
@@ -45,7 +43,6 @@ const StyledShadowBox = styled.div`
   box-shadow: inset 0px -15px 10px 0px rgba(233, 233, 233);
   z-index: 1;
 `;
-
 const StyledListOfResults = styled.ul`
   position: relative;
   overflow-y: auto;
@@ -92,23 +89,28 @@ const StyledSearchInput = styled(Input)`
 const StyledNoResultsMessage = styled(Card)`
   padding: 20px;
 `;
-
 const SearchBar = () => {
+  //firstSearchMade prevents request sending and render listing to be done before the user interacts
+  //with the searchbar.
+  const [firstSearchMade, setFirstSearchMade] = useState(false);
+  //isFocused determines if the listing is render or not, skeleton or otherwise 
+  const [isFocused, setIsFocused] = useState(false);
+  
   const dispatch = useDispatch();
   const { items, searchQuery } = useSelector((state) => state.shoppingList);
   const isLoading = useSelector((state) => state.ui.isLoadingItems);
-  const [firstSearchMade, setFirstSearchMade] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
+  //Send data to the server after 200 ms of the user stop typing
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (firstSearchMade) {
+      if (firstSearchMade && searchQuery !== "") {
         dispatch(fetchItemsData(searchQuery));
       }
-    }, 300);
+    }, 200);
     return () => clearTimeout(timer);
   }, [dispatch, searchQuery, firstSearchMade]);
 
+  //Setting the states for a new search on the local component and on redux
   const searchBarOnChangeHandler = (value) => {
     setFirstSearchMade(true);
     setIsFocused(true);
@@ -120,11 +122,11 @@ const SearchBar = () => {
   const ref = useOutsideClick(() => {
     setIsFocused(false);
   });
-
+  
   const searchBarOnFocusHandler = () => {
     setIsFocused(true);
   };
-
+  
   const onClickListHandler = () => {
     setTimeout(() => {
       setIsFocused(false);
@@ -132,14 +134,17 @@ const SearchBar = () => {
   };
 
   let itemListHTML = [];
+  //Dummy listing for the loading skeleton while data is been retrive 
   if (isLoading && firstSearchMade && searchQuery !== "") {
     itemListHTML = Array.from({ length: 10 }).map((_, i) => (
       <ShoppingItem key={i} isLoading={isLoading} />
     ));
+    //No data found after is done loading 
   } else if (items.length === 0 && !isLoading && searchQuery !== "") {
     itemListHTML.push(
       <StyledNoResultsMessage key="1"> NO RESULTS FOUND</StyledNoResultsMessage>
     );
+    //If data is found 
   } else if (searchQuery !== "") {
     itemListHTML.push(
       items.map((item) => (
@@ -151,6 +156,7 @@ const SearchBar = () => {
           edition={item.edition_count}
           autor={item.author_name}
           yearPublication={item.first_publish_year}
+          userQuery={searchQuery}
         />
       ))
     );

@@ -1,8 +1,8 @@
 import styled, { keyframes } from "styled-components";
-import { useSelector } from "react-redux";
 import Card from "../../atoms/Card/Card";
-import { boldedText } from "../../../util/formatters"
-// Create a styled container for the shopping item based on Card atom
+import { boldedText } from "../../../util/formatters";
+
+//Item Styles
 const StyledItemContainer = styled.li`
   list-style: none;
   overflow: hidden;
@@ -34,13 +34,10 @@ const StyledCard = styled(Card)`
     text-overflow: ellipsis;
   }
 `;
-
 const ItemDescriptionContainer = styled.div`
   display: block;
   text-align: left;
 `;
-
-// Create a styled image component
 const ItemImage = styled.img`
   width: 3.5em;
   height: 5.25em;
@@ -50,8 +47,7 @@ const ItemImage = styled.img`
   object-fit: cover;
   border: 1px solid #ededed;
 `;
-
-// Create a keyframe animation for the loading skeleton
+//Skeleton Styles
 const skeletonAnimation = keyframes`
   0% {
     background-color: #eee;
@@ -63,16 +59,12 @@ const skeletonAnimation = keyframes`
     background-color: #eee;
   }
 `;
-
-// Create a styled skeleton placeholder for the image
 const SkeletonImage = styled(ItemImage)`
   min-width: 50px;
   background-color: #eee;
   position: initial;
   animation: ${skeletonAnimation} 1.5s infinite;
 `;
-
-// Create a styled skeleton placeholder for the description
 const SkeletonDescription = styled.div`
   width: 200px;
   height: 16px;
@@ -81,16 +73,16 @@ const SkeletonDescription = styled.div`
   margin-bottom: 5px;
 `;
 
-// Create a functional component that uses the styled components
 const ShoppingItem = ({
   title,
   autor,
   yearPublication,
   edition,
   coverKey,
+  userQuery,
   isLoading,
 }) => {
-  const { searchQuery } = useSelector((state) => state.shoppingList);
+  //Return Skeleton if data is been loaded
   if (isLoading) {
     return (
       <StyledItemContainer>
@@ -104,18 +96,21 @@ const ShoppingItem = ({
       </StyledItemContainer>
     );
   }
+  //Provide the image by the Books API and a necessary fallback image 
   const imgSrc = coverKey
     ? "https://covers.openlibrary.org/b/olid/" + coverKey + "-M.jpg"
     : "https://static.vecteezy.com/system/resources/previews/002/563/631/original/teach-school-and-education-open-book-knowledge-line-style-icon-free-vector.jpg";
 
-  const boldedTitle = boldedText(title, searchQuery);
+  // Bolding the search done by user 
+  const boldedTitle = boldedText(title, userQuery);
+  // URI encoding to prevent weird behaiviour
+  const encodedUri = encodeURI(
+    `https://www.amazon.es/s?k=${title}+${autor}+${yearPublication}`
+  );
+
   return (
     <StyledItemContainer>
-      <a
-        href={`https://www.amazon.es/s?k=${title}+${autor}+${yearPublication}`}
-        rel="noreferrer"
-        target="_blank"
-      >
+      <a href={encodedUri} rel="noreferrer" target="_blank">
         <StyledCard>
           <SkeletonImage />
           <ItemImage src={imgSrc} alt="Shopping Item" />
